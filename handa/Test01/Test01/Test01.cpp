@@ -7,9 +7,6 @@
 
 //LED Blink
 
-
-
-
 #include <avr/io.h>
 #include <avr/delay.h>
 
@@ -27,117 +24,49 @@
 
 void sendMes(int Color, int Direction)
 {
-	//スタート部(1010)
-	PORTC = 0b00000001;
-	_delay_ms(LEDInterval);
-	PORTC = 0b00000000;
-	_delay_ms(LEDInterval);
-	PORTC = 0b00000001;
-	_delay_ms(LEDInterval);
-	PORTC = 0b00000000;
-	_delay_ms(LEDInterval);
-	
-	//データ部
-	switch(Color){
-		case White:
-		   PORTC = 0b00000000;
-		   _delay_ms(LEDInterval);
-		   break;
-		case Black:
-		   PORTC = 0b00000001;
-		   _delay_ms(LEDInterval);
-		   break;
-	}
-	
-	switch(Direction){
-		case Right:
-			PORTC = 0b00000000;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000000;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000000;
-			_delay_ms(LEDInterval);
-			break;
-		case RightTop:
-			PORTC = 0b00000000;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000000;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000001;
-			_delay_ms(LEDInterval);
-			break;
-		case Top:
-			PORTC = 0b00000000;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000001;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000000;
-			_delay_ms(LEDInterval);
-			break;
-		case LeftTop:
-			PORTC = 0b00000000;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000001;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000001;
-			_delay_ms(LEDInterval);
-			break;
-		case Left:
-			PORTC = 0b00000001;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000000;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000000;
-			_delay_ms(LEDInterval);
-			break;
-		case LeftBottom:
-			PORTC = 0b00000001;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000000;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000001;
-			_delay_ms(LEDInterval);
-			break;
-		case Bottom:
-			PORTC = 0b00000001;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000001;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000000;
-			_delay_ms(LEDInterval);
-			break;
-		case RightBottom:
-			PORTC = 0b00000001;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000001;
-			_delay_ms(LEDInterval);
-			PORTC = 0b00000001;
-			_delay_ms(LEDInterval);
-			break;
-	}
-	
-	
-	//エンド部(1010)
-	PORTC = 0b00000001;
-	_delay_ms(LEDInterval);
-	PORTC = 0b00000000;
-	_delay_ms(LEDInterval);
-	PORTC = 0b00000001;
-	_delay_ms(LEDInterval);
-	PORTC = 0b00000000;
-	_delay_ms(LEDInterval);
-	
+  //スタート部(1010)
+  PORTC = 0b00000001;
+  _delay_ms(LEDInterval);
+  PORTC = 0b00000000;
+  _delay_ms(LEDInterval);
+  PORTC = 0b00000001;
+  _delay_ms(LEDInterval);
+  PORTC = 0b00000000;
+  _delay_ms(LEDInterval);
+
+  //データ部
+  PORTC = Color;
+  _delay_ms(LEDInterval);
+
+  int b_direction[3];
+  for (int i = 0; i < 16; i++) {
+    b_direction[i] = Direction % 2;
+    Direction = Direction / 2;
+  }
+  PORTC = b_direction[2];
+  _delay_ms(LEDInterval);
+  PORTC = b_direction[1];
+  _delay_ms(LEDInterval);
+  PORTC = b_direction[0];
+  _delay_ms(LEDInterval);
+
+  //エンド部(1010)
+  PORTC = 0b00000001;
+  _delay_ms(LEDInterval);
+  PORTC = 0b00000000;
+  _delay_ms(LEDInterval);
+  PORTC = 0b00000001;
+  _delay_ms(LEDInterval);
+  PORTC = 0b00000000;
+  _delay_ms(LEDInterval);
 }
-	
-	
+
 int main(void)
 {
-	DDRC = 0b00000001;			//C0を出力にする
-	PORTC = 0b00000000;
-	
-    while(1)
-    {
-		sendMes(Black, Right);
- 
-    }
+  DDRC = 0b00000001;			//C0を出力にする
+  PORTC = 0b00000000;
+
+  while(1) {
+    sendMes(Black, Right);
+  }
 }
