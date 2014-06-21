@@ -12,25 +12,25 @@ int main(void)
   DDRA |= _BV(PA6);
   PORTA &= ~_BV(PA6);
 
-  PORTA |= _BV(PA6);
+  //PORTA |= _BV(PA6);
 
   unsigned int i = 0;
 
   while(1) {
-    /*i++;
+    i++;
     if (i < 30000) {
       PORTA |= _BV(PA6);
     } else if (i < 60000) {
       PORTA &= ~_BV(PA6);
     } else {
       i = 0;
-      }*/
+    }
 
     ADCSRA |= _BV(ADSC);
     loop_until_bit_is_set(ADCSRA, ADIF);
     data = ADCW;
 
-    if (data >= 5) {
+    if (data >= 100) {
       PORTA |= _BV(PA2);
     } else {
       PORTA &= ~_BV(PA2);
